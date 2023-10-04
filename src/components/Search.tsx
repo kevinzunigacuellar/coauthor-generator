@@ -13,11 +13,11 @@ export function Search() {
     }
 
     const urlInfo = new URL(url);
-    const [owner, repo, _type, prNumber] = urlInfo.pathname
+    const [owner, repo, _type, pr] = urlInfo.pathname
       .split("/")
       .filter(Boolean);
 
-    const participants = await getParticipants({ owner, repo, prNumber });
+    const participants = await getParticipants({ owner, repo, pr });
     setStore("participants", participants);
   }
 

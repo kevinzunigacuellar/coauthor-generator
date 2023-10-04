@@ -1,49 +1,30 @@
 export async function getParticipants({
   owner,
   repo,
-  prNumber,
+  pr,
 }: {
   owner: string;
   repo: string;
-  prNumber: string;
+  pr: string;
 }) {
-  const res = await Promise.allSettled([
-    fetch(
-      `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}/reviews`,
-    ),
-    fetch(
-      `https://api.github.com/repos/${owner}/${repo}/pulls/${prNumber}/comments`,
-    ),
-    fetch(
-      `https://api.github.com/repos/${owner}/${repo}/issues/${prNumber}/comments`,
-    ),
-  ]);
+  const urlParams = new URLSearchParams({
+    owner,
+    repo,
+    pr,
+  }).toString();
 
-  let data = await Promise.all(
-    res.map(async (d) => {
-      if (d.status !== "fulfilled") {
-        return;
-      }
-      const json = await d.value.json();
-      return json;
-    }),
-  );
+  const res = await fetch(`/api/participants?${urlParams}`);
+  const participants = await res.json();
 
-  data = data.flat().filter(Boolean);
-  const allParticipants = data
-    .filter((d) => d.user.type !== "Bot")
-    .map(({ user }) => ({
-      login: user.login as string,
-      id: user.id as string,
-    }));
-
-  const uniqueParticipants = allParticipants.filter(
-    (d, i) => allParticipants.findIndex((p) => p.id === d.id) === i,
-  );
-
-  return uniqueParticipants;
+  return participants;
 }
 
-export function createCoauthorString(user: { login: string; id: string }) {
-  return `Co-authored-by: ${user.login} <${user.id}+${user.login}@users.noreply.github.com>`;
+export function createCoauthorString(user: {
+  login: string;
+  id: string;
+  name: string | null;
+}) {
+  return `Co-authored-by: ${user.name ?? user.login} <${user.id}+${
+    user.login
+  }@users.noreply.github.com>`;
 }

@@ -7,7 +7,7 @@ export function Clipboard() {
     <div class="relative group bg-white border border-gray-200 p-4 w-full max-w-2xl mt-6 font-mono rounded-md">
       <Show
         when={store.participants.length > 0}
-        fallback="Enter a GitHub pull request url to get started."
+        fallback="Enter a GitHub pull request url to get started"
       >
         <CopyButton />
         <ul>
@@ -17,6 +17,7 @@ export function Clipboard() {
                 {createCoauthorString({
                   login: participant.login,
                   id: participant.id,
+                  name: participant.name,
                 })}
               </li>
             )}
@@ -32,11 +33,12 @@ function CopyButton() {
 
   function clickHandler() {
     const copyText = store.participants.map(createCoauthorString).join("\n");
+
     navigator.clipboard.writeText(copyText).then(() => {
       setCopied(true);
       setTimeout(() => {
         setCopied(false);
-      }, 600);
+      }, 800);
     });
   }
 
