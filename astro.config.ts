@@ -5,5 +5,5 @@ import solidJs from "@astrojs/solid-js";
 // https://astro.build/config
 export default defineConfig({
   integrations: [tailwind(), solidJs()],
-  site: "https://www.kevinzunigacuellar.com",
+  site: "https://coauthor.kevinzunigacuellar.com",
 });
