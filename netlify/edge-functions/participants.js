@@ -22,6 +22,9 @@ export default async (req) => {
       query participants($owner: String!, $repo: String!, $pr: Int!, $first: Int = 100) {
         repository(owner: $owner, name: $repo) {
           pullRequest(number: $pr) {
+            author {
+              login
+            }
             participants(first: $first) {
               nodes {
                 name,
@@ -40,6 +43,8 @@ export default async (req) => {
         pr,
       },
     );
+
+    const authorLogin = data.repository.pullRequest.author.login;
     const participants = data.repository.pullRequest.participants.nodes.map(
       ({ name, login, databaseId, avatarUrl }) => ({
         name,
@@ -47,7 +52,7 @@ export default async (req) => {
         id: databaseId,
         avatarUrl,
       }),
-    );
+    ).filter(p => p.login !== authorLogin);
 
     return new Response(JSON.stringify(participants));
   } catch (error) {
