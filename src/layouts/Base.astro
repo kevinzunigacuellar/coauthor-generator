@@ -1,49 +1,61 @@
 ---
 interface Props {
-  title: string
-  description: string
-  image: string
-  imageAlt: string
+  title: string;
+  description: string;
+  image: string;
+  imageAlt: string;
 }
 
-const {
-  title,
-  description,
-  image,
-  imageAlt
-} = Astro.props
+const { title, description, image, imageAlt } = Astro.props;
 ---
 
 <html class="scroll-smooth w-full h-full" lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
     <title>{title}</title>
-    <meta name="generator" content={Astro.generator}>
-    <meta name="description" content={description}>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <link rel="sitemap" href="/sitemap-index.xml">
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
     {/* OpenGraph Tags */}
-    <meta property="og:title" content={title}>
-    <meta property="og:type" content="website">
-    <meta property="og:url" content={Astro.url}>
-    <meta property="og:locale" content="en">
-    <meta property="og:description" content={description}>
-    <meta property="og:site_name" content={title}>
-    <meta property="og:image" content={image}>
-    <meta property="og:image:alt" content={imageAlt}>
+    <meta property="og:title" content={title} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={Astro.url} />
+    <meta property="og:locale" content="en" />
+    <meta property="og:description" content={description} />
+    <meta property="og:site_name" content={title} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:alt" content={imageAlt} />
 
     {/* Twitter Tags */}
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@kevinzunigacuel">
-    <meta name="twitter:title" content={title}>
-    <meta name="twitter:description" content={description}>
-    <meta name="twitter:image" content={image}>
-    <meta name="twitter:image:alt" content={imageAlt}>
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@kevinzunigacuel" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image:alt" content={imageAlt} />
   </head>
-
-  <body class="w-full h-full max-w-2xl mx-auto">
-    <slot/>
+  <body class="flex flex-col h-full w-full max-w-2xl mx-auto">
+    <slot />
+    <footer class="flex flex-col items-center text-center gap-2 p-4 font-mono">
+      <a href="https://astro.build"
+        ><img
+          src="https://astro.badg.es/v2/built-with-astro/tiny.svg"
+          alt="Built with Astro"
+          width="120"
+          height="20"
+        /></a
+      >
+      <p>
+        by <a
+          class="text-blue-600 hover:text-teal-600 font-semibold underline underline-offset-2"
+          href="https://twitter.com/kevinzunigacuel">Kevin</a
+        > and <a
+          class="text-purple-600 hover:text-pink-600 font-semibold underline underline-offset-2"
+          href="https://twitter.com/theotterlord">Otterlord</a>
+      </p>
+    </footer>
   </body>
 </html>
