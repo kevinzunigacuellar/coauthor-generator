@@ -7,7 +7,12 @@ export default async (req) => {
   const pr = Number(url.searchParams.get("pr"));
 
   if (!owner || !repo || !pr) {
-    return new Response("Missing params", { status: 400 });
+    const errors = [
+      "Invalid GitHub URL try 'https://github.com/<owner>/<repo>/pull/<pr>'",
+    ];
+    return new Response(JSON.stringify(errors), {
+      status: 400,
+    });
   }
 
   const octokit = new Octokit({ auth: Netlify.env.get("GH_TOKEN") });
@@ -47,7 +52,7 @@ export default async (req) => {
     return new Response(JSON.stringify(participants));
   } catch (error) {
     const errors = error.errors.map(({ message }) => message);
-    return new Response(errors, { status: 404 });
+    return new Response(JSON.stringify(errors), { status: 500 });
   }
 };
 

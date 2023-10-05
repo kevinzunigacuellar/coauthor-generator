@@ -2,6 +2,7 @@ import { createStore } from "solid-js/store";
 
 interface Store {
   participants: Participants;
+  errors: string[];
 }
 
 type Participants = {
@@ -13,6 +14,7 @@ type Participants = {
 
 const [store, setStore] = createStore<Store>({
   participants: [],
+  errors: [],
 });
 
 export { store, setStore };

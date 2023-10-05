@@ -1,30 +1,40 @@
-import { For, Show, createSignal } from "solid-js";
+import { For, Show, createSignal, Match, Switch } from "solid-js";
 import { store } from "~/scripts/store";
 import { createCoauthorString } from "~/scripts/utils";
 
 export function Clipboard() {
   return (
-    <div class="relative group bg-white border border-gray-200 p-4 w-full max-w-2xl mt-6 font-mono rounded-md">
-      <Show
-        when={store.participants.length > 0}
-        fallback="Enter a GitHub pull request url to get started"
-      >
-        <CopyButton />
-        <ul>
-          <For each={store.participants}>
-            {(participant) => (
-              <li>
-                {createCoauthorString({
-                  login: participant.login,
-                  id: participant.id,
-                  name: participant.name,
-                })}
-              </li>
-            )}
-          </For>
-        </ul>
-      </Show>
-    </div>
+    <section class="relative group bg-white border border-gray-200 p-4 w-full max-w-2xl mt-6 font-mono rounded-md">
+      <Switch fallback="Enter a GitHub pull request url to get started">
+        <Match when={store.participants.length > 0}>
+          <CopyButton />
+          <ul>
+            <For each={store.participants}>
+              {(participant) => (
+                <li>
+                  {createCoauthorString({
+                    login: participant.login,
+                    id: participant.id,
+                    name: participant.name,
+                  })}
+                </li>
+              )}
+            </For>
+          </ul>
+        </Match>
+        <Match when={store.errors.length > 0}>
+          <ErrorList />
+        </Match>
+      </Switch>
+    </section>
+  );
+}
+
+export function ErrorList() {
+  return (
+    <ul class="text-red-500">
+      <For each={store.errors}>{(error) => <li>{error}</li>}</For>
+    </ul>
   );
 }
 

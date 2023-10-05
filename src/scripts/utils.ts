@@ -14,6 +14,11 @@ export async function getParticipants({
   }).toString();
 
   const res = await fetch(`/api/participants?${urlParams}`);
+  if (!res.ok) {
+    const error = await res.json();
+    throw new Error(JSON.stringify(error));
+  }
+
   const participants = await res.json();
 
   return participants;

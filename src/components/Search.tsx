@@ -1,14 +1,23 @@
 import { getParticipants } from "../scripts/utils";
 import { setStore } from "~/scripts/store";
+import { batch } from "solid-js";
 
 export function Search() {
   async function handleSubmit(e: SubmitEvent) {
     e.preventDefault();
     const formData = new FormData(e.target as HTMLFormElement);
-    let url = formData.get("url")?.toString();
+    let url = formData.get("url")?.toString() || "";
 
-    // TODO: validation
-    if (!url) {
+    const regexPattern =
+      /^https:\/\/github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+\/pull\/\d+$/;
+
+    if (!regexPattern.test(url)) {
+      batch(() => {
+        setStore("errors", [
+          "Invalid GitHub Pull Request URL try 'https://github.com/<owner>/<repo>/pull/<pr>'",
+        ]);
+        setStore("participants", []);
+      });
       return;
     }
 
@@ -17,8 +26,21 @@ export function Search() {
       .split("/")
       .filter(Boolean);
 
-    const participants = await getParticipants({ owner, repo, pr });
-    setStore("participants", participants);
+    try {
+      const participants = await getParticipants({ owner, repo, pr });
+      batch(() => {
+        setStore("participants", participants);
+        setStore("errors", []);
+      });
+    } catch (e) {
+      if (e instanceof Error) {
+        const errors = JSON.parse(e.message);
+        batch(() => {
+          setStore("errors", errors);
+          setStore("participants", []);
+        });
+      }
+    }
   }
 
   return (
