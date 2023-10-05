@@ -8,7 +8,7 @@ export function Clipboard() {
       <Switch fallback="Enter a GitHub pull request url to get started">
         <Match when={store.participants.length > 0}>
           <CopyButton />
-          <ul>
+          <ul class="overflow-x-scroll">
             <For each={store.participants}>
               {(participant) => (
                 <li>
