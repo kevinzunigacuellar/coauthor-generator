@@ -44,7 +44,7 @@ export function Search() {
   }
 
   return (
-    <form class="block w-full" onsubmit={handleSubmit}>
+    <form class="block w-full relative" onsubmit={handleSubmit}>
       <label for="url" class="block mb-2 font-semibold">
         GitHub Pull Request
       </label>
@@ -52,10 +52,16 @@ export function Search() {
         id="url"
         name="url"
         type="url"
-        class="w-full px-3 py-1.5 rounded-md border"
+        class="block w-full px-3 py-1.5 rounded-md border"
         placeholder="https://github.com/withastro/starlight/pull/742"
         required
-      />
+      ></input>
+      <button
+        class="absolute bottom-0.5 right-0.5 border-transparent rounded border block bg-gray-800 hover:bg-gray-700 text-gray-100 px-3 py-1"
+        type="submit"
+      >
+        Generate
+      </button>
     </form>
   );
 }
