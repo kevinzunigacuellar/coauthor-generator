@@ -45,14 +45,14 @@ export default async (req) => {
     );
 
     const authorLogin = data.repository.pullRequest.author.login;
-    const participants = data.repository.pullRequest.participants.nodes.map(
-      ({ name, login, databaseId, avatarUrl }) => ({
+    const participants = data.repository.pullRequest.participants.nodes
+      .map(({ name, login, databaseId, avatarUrl }) => ({
         name,
         login,
         id: databaseId,
         avatarUrl,
-      }),
-    ).filter(p => p.login !== authorLogin);
+      }))
+      .filter((p) => p.login !== authorLogin);
 
     return new Response(JSON.stringify(participants));
   } catch (error) {
