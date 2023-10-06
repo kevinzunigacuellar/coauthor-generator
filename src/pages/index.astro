@@ -2,6 +2,8 @@
 import Base from "~/layouts/Base.astro";
 import { Search } from "~/components/Search";
 import { Clipboard } from "~/components/Clipboard";
+import "@fontsource/ibm-plex-mono";
+import "@fontsource/merriweather/700.css";
 ---
 
 <Base
@@ -11,7 +13,9 @@ import { Clipboard } from "~/components/Clipboard";
   imageAlt="A banner with the text 'Co-author Generator' and a description of the tool"
 >
   <main class="flex flex-1 flex-col justify-center items-center">
-    <h1 class="text-4xl sm:text-6xl w-full text-center font-serif pb-14">
+    <h1
+      class="text-4xl font-bold sm:text-6xl w-full text-center pb-14 font-serif"
+    >
       Co-author Generator
     </h1>
     <div class="bg-gray-100 border w-full sm:p-10 p-6">
