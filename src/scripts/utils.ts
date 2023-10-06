@@ -7,6 +7,10 @@ export async function getParticipants({
   repo: string;
   pr: string;
 }) {
+  if (!owner || !repo || !pr) {
+    return;
+  }
+
   const urlParams = new URLSearchParams({
     owner,
     repo,
@@ -15,8 +19,7 @@ export async function getParticipants({
 
   const res = await fetch(`/api/participants?${urlParams}`);
   if (!res.ok) {
-    const error = await res.json();
-    throw new Error(JSON.stringify(error));
+    throw new Error(await res.text());
   }
 
   const participants = await res.json();

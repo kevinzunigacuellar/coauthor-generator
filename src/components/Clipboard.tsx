@@ -1,15 +1,55 @@
-import { For, Show, createSignal, Match, Switch } from "solid-js";
-import { store } from "~/scripts/store";
-import { createCoauthorString } from "~/scripts/utils";
+import {
+  For,
+  Show,
+  createSignal,
+  Match,
+  Switch,
+  createResource,
+} from "solid-js";
+import { search } from "~/scripts/store";
+import { createCoauthorString, getParticipants } from "~/scripts/utils";
 
 export function Clipboard() {
+  const [data] = createResource(search, getParticipants);
+  const [copied, setCopied] = createSignal(false);
+  const participantsString = () => data().map(createCoauthorString).join("\n");
+
+  function clickHandler() {
+    navigator.clipboard.writeText(participantsString()).then(() => {
+      setCopied(true);
+      setTimeout(() => {
+        setCopied(false);
+      }, 800);
+    });
+  }
+
   return (
     <section class="relative group bg-white border border-gray-200 p-4 w-full max-w-2xl mt-6 font-mono rounded-md">
       <Switch fallback="Enter a GitHub pull request url to get started">
-        <Match when={store.participants.length > 0}>
-          <CopyButton />
+        <Match
+          when={
+            data.loading &&
+            (data.state === "refreshing" || data.state === "pending")
+          }
+        >
+          Loading...
+        </Match>
+        <Match when={data.error}>{data.error.message}</Match>
+        <Match when={data()}>
+          <button
+            class="absolute bg-white opacity-0 group-hover:opacity-100 hover:bg-gray-100 z-20 right-2 top-2 border border-gray-300 p-1 rounded-md"
+            classList={{
+              "text-green-600 border-green-600": copied(),
+              "text-gray-500": !copied(),
+            }}
+            onclick={clickHandler}
+          >
+            <Show when={copied()} fallback={<CopyIcon />}>
+              <CheckIcon />
+            </Show>
+          </button>
           <ul class="overflow-x-scroll">
-            <For each={store.participants}>
+            <For each={data()}>
               {(participant) => (
                 <li>
                   {createCoauthorString({
@@ -22,49 +62,8 @@ export function Clipboard() {
             </For>
           </ul>
         </Match>
-        <Match when={store.errors.length > 0}>
-          <ErrorList />
-        </Match>
       </Switch>
     </section>
-  );
-}
-
-export function ErrorList() {
-  return (
-    <ul class="text-red-500">
-      <For each={store.errors}>{(error) => <li>{error}</li>}</For>
-    </ul>
-  );
-}
-
-function CopyButton() {
-  const [copied, setCopied] = createSignal(false);
-
-  function clickHandler() {
-    const copyText = store.participants.map(createCoauthorString).join("\n");
-
-    navigator.clipboard.writeText(copyText).then(() => {
-      setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-      }, 800);
-    });
-  }
-
-  return (
-    <button
-      class="absolute bg-white opacity-0 group-hover:opacity-100 hover:bg-gray-100 z-20 right-2 top-2 border border-gray-300 p-1 rounded-md"
-      classList={{
-        "text-green-600 border-green-600": copied(),
-        "text-gray-500": !copied(),
-      }}
-      onclick={clickHandler}
-    >
-      <Show when={copied()} fallback={<CopyIcon />}>
-        <CheckIcon />
-      </Show>
-    </button>
   );
 }
 

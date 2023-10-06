@@ -7,11 +7,8 @@ export default async (req) => {
   const pr = Number(url.searchParams.get("pr"));
 
   if (!owner || !repo || !pr) {
-    const errors = [
-      "Invalid GitHub URL try 'https://github.com/<owner>/<repo>/pull/<pr>'",
-    ];
-    return new Response(JSON.stringify(errors), {
-      status: 400,
+    return new Response("Invalid GitHub URL", {
+      status: 500,
     });
   }
 
@@ -56,8 +53,8 @@ export default async (req) => {
 
     return new Response(JSON.stringify(participants));
   } catch (error) {
-    const errors = error.errors.map(({ message }) => message);
-    return new Response(JSON.stringify(errors), { status: 500 });
+    const [message] = error.errors.map(({ message }) => message);
+    return new Response(message, { status: 500 });
   }
 };
 
