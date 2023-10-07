@@ -24,8 +24,8 @@ export function Clipboard() {
   }
 
   return (
-    <section class="relative group bg-white border border-gray-200 p-4 w-full max-w-2xl mt-6 font-mono rounded-md">
-      <Switch fallback="Enter a GitHub pull request url to get started">
+    <section class="relative group bg-zinc-200 border-zinc-300 dark:text-zinc-300 text-zinc-800 dark:bg-zinc-700 dark:border-zinc-600 border px-4 py-3 w-full max-w-2xl mt-5 font-mono rounded-md">
+      <Switch fallback="Enter a GitHub pull request URL to get its co-authors">
         <Match
           when={
             data.loading &&
@@ -37,10 +37,12 @@ export function Clipboard() {
         <Match when={data.error}>{data.error.message}</Match>
         <Match when={data()}>
           <button
-            class="absolute bg-white opacity-0 group-hover:opacity-100 hover:bg-gray-100 z-20 right-2 top-2 border border-gray-300 p-1 rounded-md"
+            class="absolute bg-zinc-100 dark:bg-zinc-600 opacity-0 dark:hover:bg-zinc-500 hover:bg-white group-hover:opacity-100 z-10 right-2 top-2 border p-1 rounded-md"
             classList={{
-              "text-green-600 border-green-600": copied(),
-              "text-gray-500": !copied(),
+              "text-green-600 border-green-600 dark:text-green-400 dark:border-green-400":
+                copied(),
+              "text-zinc-500 dark:text-zinc-300 border-zinc-300 dark:border-zinc-400 dark:border-opacity-70":
+                !copied(),
             }}
             onclick={clickHandler}
           >

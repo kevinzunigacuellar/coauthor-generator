@@ -16,23 +16,20 @@ export function Search() {
 
   return (
     <form class="block w-full relative" onsubmit={handleSubmit}>
-      <label for="url" class="block mb-2 font-semibold">
+      <label
+        for="url"
+        class="block mb-2 text-sm font-mono font-bold tracking-wide text-zinc-900 dark:text-zinc-100"
+      >
         GitHub Pull Request
       </label>
       <input
         id="url"
         name="url"
         type="url"
-        class="block w-full px-3 py-1.5 rounded-md border"
+        class="block w-full px-3 py-1.5 rounded-md border placeholder:dark:text-zinc-500 placeholder:text-zinc-400 font-mono dark:text-zinc-300 text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-600 dark:focus:bg-zinc-900 focus:bg-white focus:ring-opacity-60"
         placeholder="https://github.com/withastro/starlight/pull/742"
         required
       ></input>
-      <button
-        class="absolute bottom-0.5 right-0.5 border-transparent rounded border block bg-gray-800 hover:bg-gray-700 text-gray-100 px-3 py-1"
-        type="submit"
-      >
-        Generate
-      </button>
     </form>
   );
 }

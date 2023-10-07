@@ -9,7 +9,7 @@ interface Props {
 const { title, description, image, imageAlt } = Astro.props;
 ---
 
-<html class="scroll-smooth w-full h-full" lang="en">
+<html class="w-full h-full" lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -37,9 +37,13 @@ const { title, description, image, imageAlt } = Astro.props;
     <meta name="twitter:image" content={image} />
     <meta name="twitter:image:alt" content={imageAlt} />
   </head>
-  <body class="flex flex-col h-full w-full max-w-2xl mx-auto">
+  <body
+    class="flex flex-col h-full w-full max-w-2xl mx-auto bg-zinc-50 dark:bg-zinc-900"
+  >
     <slot />
-    <footer class="flex flex-col items-center text-center gap-2 p-4 font-mono">
+    <footer
+      class="flex flex-col items-center text-center gap-2 p-4 font-mono text-zinc-500 dark:text-zinc-400"
+    >
       <a href="https://astro.build"
         ><img
           src="https://astro.badg.es/v2/built-with-astro/tiny.svg"
@@ -50,16 +54,16 @@ const { title, description, image, imageAlt } = Astro.props;
       >
       <p>
         by <a
-          class="text-blue-600 hover:text-teal-600 underline underline-offset-2"
+          class="text-blue-600 hover:text-teal-600 dark:hover:text-teal-400 dark:text-blue-400 underline underline-offset-2"
           href="https://twitter.com/kevinzunigacuel">Kevin</a
         > and <a
-          class="text-purple-600 hover:text-pink-600 underline underline-offset-2"
+          class="text-purple-600 hover:text-pink-600 dark:hover:text-pink-400 dark:text-purple-400 underline underline-offset-2"
           href="https://twitter.com/theotterlord">Otterlord</a
         >
       </p>
       <a
         href="https://github.com/kevinzunigacuellar/coauthor-generator"
-        class="text-zinc-600 hover:text-zinc-900 underline underline-offset-2"
+        class="text-zinc-600 dark:text-zinc-300 dark:hover:text-zinc-100 hover:text-zinc-900 underline underline-offset-2"
         >Source code on GitHub</a
       >
     </footer>
