@@ -18,13 +18,12 @@ export async function getParticipants({
   }).toString();
 
   const res = await fetch(`/api/participants?${urlParams}`);
-  if (!res.ok) {
-    throw new Error(await res.text());
+  const data = await res.json();
+
+  if (res.status !== 200) {
+    throw new Error(data.message);
   }
-
-  const participants = await res.json();
-
-  return participants;
+  return data;
 }
 
 export function createCoauthorString(user: {
