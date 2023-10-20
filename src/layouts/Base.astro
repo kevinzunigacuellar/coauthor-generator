@@ -19,6 +19,20 @@ const { title, description, image, imageAlt } = Astro.props;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
+    <link
+      rel="preload"
+      href="/fonts/ibm-plex-mono-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/merriweather-latin-700-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     {/* OpenGraph Tags */}
     <meta property="og:title" content={title} />
     <meta property="og:type" content="website" />

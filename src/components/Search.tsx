@@ -18,7 +18,7 @@ export function Search() {
     <form class="block w-full relative" onsubmit={handleSubmit}>
       <label
         for="url"
-        class="block mb-2 text-sm font-mono font-bold tracking-wide text-zinc-900 dark:text-zinc-100"
+        class="block mb-2 text-sm font-bold text-zinc-900 dark:text-zinc-100"
       >
         GitHub Pull Request
       </label>
