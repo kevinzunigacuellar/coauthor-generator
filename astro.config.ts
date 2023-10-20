@@ -6,4 +6,7 @@ import solidJs from "@astrojs/solid-js";
 export default defineConfig({
   integrations: [tailwind(), solidJs()],
   site: "https://coauthor.kevinzunigacuellar.com",
+  build : {
+    inlineStylesheets: "always",
+  }
 });
