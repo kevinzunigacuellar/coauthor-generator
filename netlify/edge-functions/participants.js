@@ -55,8 +55,8 @@ async function getParticipants(owner, repo, pr) {
       repo,
       pr,
     });
-    const authorLogin = data.repository.pullRequest.author.login;
-    const participants = data.repository.pullRequest.participants.nodes
+    const authorLogin = data.repository.pullRequest.author.login ?? "";
+    const participants = (data.repository.pullRequest.participants.nodes ?? [])
       .map(({ name, login, databaseId, avatarUrl }) => ({
         name,
         login,
