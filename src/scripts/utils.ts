@@ -1,3 +1,8 @@
+interface Participants {
+  name: string;
+  login: string;
+  id: string;
+}
 export async function getParticipants({
   owner,
   repo,
@@ -23,7 +28,7 @@ export async function getParticipants({
   if (res.status !== 200) {
     throw new Error(data.message);
   }
-  return data;
+  return data as Participants[];
 }
 
 export function createCoauthorString(user: {

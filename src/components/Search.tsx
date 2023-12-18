@@ -1,9 +1,12 @@
 import { setSearch } from "~/scripts/store";
+import type { JSX } from "solid-js";
 
 export function Search() {
-  async function handleSubmit(e: SubmitEvent) {
+  const handleSubmit: JSX.EventHandler<HTMLFormElement, SubmitEvent> = async (
+    e,
+  ) => {
     e.preventDefault();
-    const formData = new FormData(e.target as HTMLFormElement);
+    const formData = new FormData(e.currentTarget);
     let url = formData.get("url")?.toString() || "";
 
     if (!url) return;
@@ -12,7 +15,7 @@ export function Search() {
 
     if (type !== "pull") return;
     setSearch({ owner, repo, pr });
-  }
+  };
 
   return (
     <form class="block w-full relative" onsubmit={handleSubmit}>

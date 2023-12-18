@@ -12,15 +12,16 @@ import { createCoauthorString, getParticipants } from "~/scripts/utils";
 export function Clipboard() {
   const [data] = createResource(search, getParticipants);
   const [copied, setCopied] = createSignal(false);
-  const participantsString = () => data().map(createCoauthorString).join("\n");
 
   function clickHandler() {
-    navigator.clipboard.writeText(participantsString()).then(() => {
-      setCopied(true);
-      setTimeout(() => {
-        setCopied(false);
-      }, 800);
-    });
+    navigator.clipboard
+      .writeText(data()!.map(createCoauthorString).join("\n"))
+      .then(() => {
+        setCopied(true);
+        setTimeout(() => {
+          setCopied(false);
+        }, 800);
+      });
   }
 
   return (
@@ -35,6 +36,9 @@ export function Clipboard() {
           Loading...
         </Match>
         <Match when={data.error}>{data.error.message}</Match>
+        <Match when={data()?.length === 0}>
+          This pull request has no co-authors other than the author.
+        </Match>
         <Match when={data()}>
           <button
             class="absolute bg-zinc-100 dark:bg-zinc-600 opacity-0 dark:hover:bg-zinc-500 hover:bg-white group-hover:opacity-100 z-10 right-2 top-2 border p-1 rounded-md"

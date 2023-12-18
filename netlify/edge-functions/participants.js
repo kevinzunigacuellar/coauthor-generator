@@ -57,11 +57,10 @@ async function getParticipants(owner, repo, pr) {
     });
     const authorLogin = data.repository.pullRequest.author.login ?? "";
     const participants = (data.repository.pullRequest.participants.nodes ?? [])
-      .map(({ name, login, databaseId, avatarUrl }) => ({
+      .map(({ name, login, databaseId }) => ({
         name,
         login,
         id: databaseId,
-        avatarUrl,
       }))
       .filter((p) => p.login !== authorLogin);
     storeAnalytics(owner, repo);
@@ -98,7 +97,7 @@ export default async (req) => {
   }
 
   const { error, participants } = await getParticipants(owner, repo, pr);
-  
+
   if (error) {
     return new Response(JSON.stringify(error), {
       status: 500,
