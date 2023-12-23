@@ -1,5 +1,4 @@
 import { Octokit } from "https://esm.sh/octokit?dts";
-import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const GQL_QUERY = `
 query participants($owner: String!, $repo: String!, $pr: Int!, $first: Int = 100) {
@@ -21,32 +20,6 @@ query participants($owner: String!, $repo: String!, $pr: Int!, $first: Int = 100
 }
 `;
 
-async function storeAnalytics(owner, repo) {
-  const supabase = createClient(
-    Netlify.env.get("SB_URL"),
-    Netlify.env.get("SB_ANON_KEY"),
-  );
-
-  const { data, error } = await supabase
-    .from("analytics")
-    .select("id, count")
-    .eq("owner", owner)
-    .eq("repo", repo)
-    .limit(1);
-
-  if (error) return;
-
-  if (data.length > 0) {
-    const { id, count } = data[0];
-    await supabase
-      .from("analytics")
-      .update({ count: count + 1 })
-      .eq("id", id);
-  } else {
-    await supabase.from("analytics").insert({ owner, repo });
-  }
-}
-
 async function getParticipants(owner, repo, pr) {
   const octokit = new Octokit({ auth: Netlify.env.get("GH_TOKEN") });
   try {
@@ -62,8 +35,9 @@ async function getParticipants(owner, repo, pr) {
         login,
         id: databaseId,
       }))
+      // remove the author from the list of participants
       .filter((p) => p.login !== authorLogin);
-    storeAnalytics(owner, repo);
+
     return {
       error: null,
       participants,
